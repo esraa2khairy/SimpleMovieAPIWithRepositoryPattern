@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryPatternWithUOW.Core;
 using RepositoryPatternWithUOW.Core.DTOs;
@@ -11,15 +12,18 @@ namespace RepositoryPatternWithUOW.API.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
+
         private List<string> AllowedExtentions = new List<string> { ".png", ".jpg" };
         private long AllowedSizeForPoster = 1048576;
         private readonly IUnitOfWork _unitofwork;
-        public MoviesController(IUnitOfWork unitofwork)
+        private readonly IMapper _mapper;
+        public MoviesController(IUnitOfWork unitofwork , IMapper mapper)
         {
             _unitofwork = unitofwork;
+            _mapper = mapper;   
         }
         [HttpGet]
-        public IActionResult GetMovies ()
+        public IActionResult GetMovies()
         {
             var movies = _unitofwork.Movies.GetAll( x => x.Rate , x => x.Category);
             return Ok(movies);
@@ -41,17 +45,18 @@ namespace RepositoryPatternWithUOW.API.Controllers
             using var datastream = new MemoryStream();
             dto.poster.CopyTo(datastream);
 
-            var movie = new Movie
-            {
-                CategoryId = dto.CategoryId,
-                Title = dto.Title,
-                poster = datastream.ToArray(),
-                Rate = dto.Rate,
-                Year = dto.Year,
-                Storeline = dto.Storeline,
-            };
+            var movie = _mapper.Map<Movie>(dto);
+            movie.poster = datastream.ToArray();
+
             _unitofwork.Movies.Add(movie);  
             _unitofwork.Complete(); 
+
+            return Ok(movie);
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetMovie(int id)
+        {
+            var movie = _unitofwork.Movies.Get(id , x => x.Category );
             return Ok(movie);
         }
     }

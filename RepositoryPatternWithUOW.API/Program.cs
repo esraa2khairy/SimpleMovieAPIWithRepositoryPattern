@@ -9,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
  builder.Services.AddDbContext<ApplicationDbContext>( 
      options => options.UseSqlServer(ConnectionString));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -22,5 +22,13 @@ namespace RepositoryPatternWithUOW.EF.Repositories
         {
             return _context.movies.OrderByDescending(expression).Include(include).ToList();
         }
+
+        Movie IMovies.Get(int id , Expression<Func<Movie, object>> include)
+        {
+            var m = _context.movies.Include(include).FirstOrDefault( x =>x.Id == id);
+            return m; ;
+        }
+
+
     }
 }

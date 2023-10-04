@@ -11,5 +11,6 @@ namespace RepositoryPatternWithUOW.Core.Interfaces
     public interface IMovies : IGenericRepository<Movie>
     {
        IEnumerable<Movie> GetAll(Expression<Func<Movie, object>> expression, Expression<Func<Movie, object>> include);
+       Movie Get(int id , Expression<Func<Movie, object>> include);
     }
 }
