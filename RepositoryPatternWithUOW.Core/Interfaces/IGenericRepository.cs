@@ -12,6 +12,7 @@ namespace RepositoryPatternWithUOW.Core.Interfaces
         IEnumerable<T> GetAll();
         T Add(T item);
         T Delete(T item);
-        
+
+
     }
 }

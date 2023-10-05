@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RepositoryPatternWithUOW.Core;
+using RepositoryPatternWithUOW.Core.Mapping;
 using RepositoryPatternWithUOW.EF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
  builder.Services.AddDbContext<ApplicationDbContext>( 
      options => options.UseSqlServer(ConnectionString));
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();

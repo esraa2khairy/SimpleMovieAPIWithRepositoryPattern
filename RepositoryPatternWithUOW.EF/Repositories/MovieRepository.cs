@@ -25,10 +25,13 @@ namespace RepositoryPatternWithUOW.EF.Repositories
 
         Movie IMovies.Get(int id , Expression<Func<Movie, object>> include)
         {
-            var m = _context.movies.Include(include).FirstOrDefault( x =>x.Id == id);
-            return m; ;
+           return _context.movies.Include(include).SingleOrDefault( x =>x.Id == id);
+            
         }
-
+        void IMovies.Update(Movie item)
+        {
+             _context.Update(item);
+        }
 
     }
 }

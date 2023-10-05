@@ -13,8 +13,8 @@ namespace RepositoryPatternWithUOW.Core.Mapping
     {
         public MappingProfiles( ) 
         {
-            CreateMap<Movie, MovieDto>();
-            //CreateMap<MovieDto , Movie>();
+            CreateMap<Movie, MovieDetailsDto>();
+            CreateMap<MovieDto , Movie>().ForMember(scr => scr.poster , opt => opt.Ignore());
         }
     }
 }
